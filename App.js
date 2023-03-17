@@ -124,6 +124,7 @@ function CreatePostScreen({navigation, route}) {
   );
 }
 
+
 const Stack = createNativeStackNavigator();
 
 function App() {
