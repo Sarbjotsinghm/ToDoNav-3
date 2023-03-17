@@ -38,43 +38,11 @@ function DetailsScreen({navigation}) {
 
 function LogoTitle() {
   return (
-    <Image
-      style={{width: 50, height: 50}}
-      source={require('./assets/2.jpg')}
-    />
+    <Image style={{width: 50, height: 50}} source={require('./assets/2.jpg')} />
   );
 }
 
-function StackScreen() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{headerTitle: props => <LogoTitle {...props} />}}
-      />
-    </Stack.Navigator>
-  );
-}
-
-function HomeScreen({navigation, route}) {
-  React.useEffect(() => {
-    if (route.params?.post) {
-      // Post updated, do something with `route.params.post`
-      // For example, send the post to the server
-    }
-  }, [route.params?.post]);
-
-  return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Button
-        title="Update the title"
-        onPress={() => navigation.setOptions({title: 'Updated!'})}
-      />
-      <Text style={{margin: 10}}>Post: {route.params?.post}</Text>
-    </View>
-  );
-}
+//
 
 // function StackScreen() {
 //   return (
@@ -96,6 +64,38 @@ function HomeScreen({navigation, route}) {
 //     </Stack.Navigator>
 //   );
 // }
+
+function StackScreen() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={({navigation, route}) => ({
+          headerTitle: props => <LogoTitle {...props} />,
+          // Add a placeholder button without the `onPress` to avoid flicker
+          headerRight: () => <Button title="Update count" />,
+        })}
+      />
+    </Stack.Navigator>
+  );
+}
+
+function HomeScreen({navigation}) {
+  const [count, setCount] = React.useState(0);
+
+  React.useEffect(() => {
+    // Use `setOptions` to update the button that we previously specified
+    // Now the button includes an `onPress` handler to update the count
+    navigation.setOptions({
+      headerRight: () => (
+        <Button onPress={() => setCount(c => c + 1)} title="Update count" />
+      ),
+    });
+  }, [navigation]);
+
+  return <Text>Count: {count}</Text>;
+}
 
 function CreatePostScreen({navigation, route}) {
   const [postText, setPostText] = React.useState('');
