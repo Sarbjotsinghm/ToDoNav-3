@@ -90,7 +90,7 @@ function App() {
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen
           name="Home"
-          component={CreatePostScreen}
+          component={HomeScreen,}
           options={{title: 'Overview'}}
         />
         <Stack.Screen name="Details" component={DetailsScreen} />
