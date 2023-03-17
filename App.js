@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 
-import {View, Text, Button, TextInput} from 'react-native';
+import {View, Text, Button, TextInput, Image} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
@@ -36,6 +36,27 @@ function DetailsScreen({navigation}) {
   );
 }
 
+function LogoTitle() {
+  return (
+    <Image
+      style={{width: 50, height: 50}}
+      source={require('./assets/2.jpg')}
+    />
+  );
+}
+
+function StackScreen() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{headerTitle: props => <LogoTitle {...props} />}}
+      />
+    </Stack.Navigator>
+  );
+}
+
 function HomeScreen({navigation, route}) {
   React.useEffect(() => {
     if (route.params?.post) {
@@ -47,13 +68,34 @@ function HomeScreen({navigation, route}) {
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       <Button
-        title="Create post"
-        onPress={() => navigation.navigate('CreatePost')}
+        title="Update the title"
+        onPress={() => navigation.setOptions({title: 'Updated!'})}
       />
       <Text style={{margin: 10}}>Post: {route.params?.post}</Text>
     </View>
   );
 }
+
+// function StackScreen() {
+//   return (
+//     <Stack.Navigator
+//       screenOptions={{
+//         headerStyle: {
+//           backgroundColor: '#f4511e',
+//         },
+//         headerTintColor: '#fff',
+//         headerTitleStyle: {
+//           fontWeight: 'bold',
+//         },
+//       }}>
+//       <Stack.Screen
+//         name="Home"
+//         component={HomeScreen}
+//         options={{title: 'My home'}}
+//       />
+//     </Stack.Navigator>
+//   );
+// }
 
 function CreatePostScreen({navigation, route}) {
   const [postText, setPostText] = React.useState('');
@@ -90,7 +132,7 @@ function App() {
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen
           name="Home"
-          component={HomeScreen,}
+          component={StackScreen}
           options={{title: 'Overview'}}
         />
         <Stack.Screen name="Details" component={DetailsScreen} />
